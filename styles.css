@@ -1,95 +1,54 @@
-/* Reset and global styles */
-* {
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
 }
 
-/* Full-screen layout */
-body {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(38, 39, 59);
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
 }
 
-/* Centered login container */
-.container {
-    width: 20rem;
-    margin: 1rem;
-    padding: 2rem 1rem;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+h1, h2 {
+    color: #333;
 }
 
-/* Title styling */
-.container h2 {
-    margin-bottom: 2rem;
-}
-
-/* Form layout */
-.container form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-}
-
-/* Labels */
-.container form label {
-    width: 100%;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-/* Input fields */
-.container form input {
-    width: 16rem;
-    outline: none;
-    padding: 8px 10px;
-    margin-bottom: 1rem;
-    border: 1px solid rgb(133, 129, 129);
-    border-radius: 5px;
-}
-
-/* Button styling */
 button {
+    background-color: #007BFF;
+    color: white;
     border: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 0.6rem;
+    padding: 10px 15px;
     cursor: pointer;
-    font-weight: bold;
-    border-radius: 25px;
-    width: 100%;
-    background: linear-gradient(to right, rgb(68, 0, 255), rgb(0, 255, 8));
-    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-/* Button hover effect */
 button:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+    background-color: #0056b3;
 }
 
-/* Error message */
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 1rem;
-    display: none;
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-/* Signup text */
-.newUser span {
-    color: rgb(25, 176, 176);
-    cursor: pointer;
+.image-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
 }

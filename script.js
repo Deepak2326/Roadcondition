@@ -1,6 +1,12 @@
-document.querySelector(".form").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Prevent page reload
+document.addEventListener("DOMContentLoaded", function () {
+    fetchImages();
+    fetchStats();
+});
 
+// Handle user login
+async function loginUser(event) {
+    event.preventDefault();
+    
     let username = document.getElementById("userId").value.trim();
     let password = document.getElementById("password").value.trim();
     let errorMessage = document.getElementById("error-message");
@@ -14,54 +20,76 @@ document.querySelector(".form").addEventListener("submit", async function(event)
     const data = await response.json();
 
     if (response.ok) {
-        localStorage.setItem("authToken", data.token); // Store JWT Token
+        localStorage.setItem("authToken", data.token);
         alert("Login successful!");
         window.location.href = "dashboard.html";
     } else {
         errorMessage.textContent = data.error || "Invalid username or password.";
         errorMessage.style.display = "block";
     }
-});
+}
 
-// Handle image upload in dashboard
-async function uploadImage(file) {
+document.querySelector(".form")?.addEventListener("submit", loginUser);
+
+// Handle image upload
+async function uploadImage(event) {
+    event.preventDefault();
+    
+    const fileInput = document.getElementById("imageUpload");
+    if (fileInput.files.length === 0) {
+        alert("Please select an image to upload.");
+        return;
+    }
+    
     const formData = new FormData();
-    formData.append("file", file);
-
+    formData.append("file", fileInput.files[0]);
+    
     const token = localStorage.getItem("authToken");
     if (!token) {
         alert("Please login first.");
         return;
     }
-
+    
     const response = await fetch("http://127.0.0.1:5000/api/upload", {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` },
         body: formData
     });
-
+    
     const data = await response.json();
     if (response.ok) {
-        alert("Image uploaded successfully!");
+        alert(`Image uploaded successfully!\nCategory: ${data.category}\nConfidence: ${(data.confidence * 100).toFixed(2)}%`);
         fetchImages();
     } else {
         alert("Error: " + (data.error || "Failed to upload image."));
     }
 }
 
+document.getElementById("uploadForm")?.addEventListener("submit", uploadImage);
+
 // Fetch and display uploaded images
 async function fetchImages() {
     const response = await fetch("http://127.0.0.1:5000/api/images");
     const data = await response.json();
-   
+    
     const imageContainer = document.getElementById("imageContainer");
     imageContainer.innerHTML = "";
+    
     data.forEach(img => {
+        const imgWrapper = document.createElement("div");
+        imgWrapper.classList.add("image-box");
+        
         const imgElement = document.createElement("img");
         imgElement.src = `http://127.0.0.1:5000/uploads/${img.filename}`;
         imgElement.alt = img.category;
         imgElement.width = 200;
-        imageContainer.appendChild(imgElement);
+        
+        const label = document.createElement("p");
+        label.innerHTML = `<strong>Classification:</strong> ${img.category} (${(img.confidence * 100).toFixed(2)}%)`;
+        
+        imgWrapper.appendChild(imgElement);
+        imgWrapper.appendChild(label);
+        imageContainer.appendChild(imgWrapper);
     });
 }
 
@@ -79,7 +107,3 @@ function logout() {
 }
 
 document.getElementById("logout")?.addEventListener("click", logout);
-document.addEventListener("DOMContentLoaded", function() {
-    fetchImages();
-    fetchStats();
-});
